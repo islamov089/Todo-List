@@ -4,19 +4,45 @@
         <h2 id="title">Todo List</h2>
         <add-item-form />
       </div>
-      <list-view />
+      <list-view 
+      :items="items" 
+      v-on:reloadlist="getList()"
+      />
     </div>
   </template>
   
   <script>
-  import addItemForm from './addItemForm.vue';
+  import axios from 'axios';
+import addItemForm from './addItemForm.vue';
   import listView from './listView.vue';
+import { error } from 'laravel-mix/src/Log';
   
   export default {
     components: {
       addItemForm,
-      listView,
+      listView
     },
+data:function(){
+  return{
+    items:[]
+  }
+},
+methods:{
+  getList(){
+    axios.get('api/items')
+    .then(response=>{
+      this.items = response.data
+    })
+    .catch(error=>{
+      console.log(error)
+    })
+  }
+},
+created(){
+  this.getList();
+}
+
+
   };
   </script>
   

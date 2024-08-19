@@ -5,7 +5,7 @@ services:
     container_name: example-nginx
     restart: unless-stopped
     ports:
-      - 5500:80
+      - 8080:80
     volumes:
       # Re-use local composer cache via host-volume
       - ~/.composer-docker/cache:/root/.composer/cache:delegated
@@ -13,13 +13,6 @@ services:
       - ./:/var/www/html
       # Mount config for development
       - ./docker/nginx:/etc/nginx/conf.d:cached
-    links:
-      - php-fpm
-    depends_on:
-      - php-fpm
-      - db
-    networks:
-      - example
 
   php-fpm:
     build: docker/php-fpm
@@ -29,13 +22,7 @@ services:
       - 9000:9000
     volumes:
       - ./:/var/www/html
-    links:
-      - db
-      - redis
-    depends_on:
-      - db
-    networks:
-      - example
+    working_dir: /var/www/html/
 
   db:
     image: mysql:5.7
@@ -46,13 +33,11 @@ services:
       - ./docker/dump:/docker-entrypoint-initdb.d
       - ./docker/storage/mysql:/var/lib/mysql
     environment:
-        MYSQL_DATABASE: 'todolist'
+        MYSQL_DATABASE: 'todo'
         MYSQL_ROOT_USER: 'root'
         MYSQL_ALLOW_EMPTY_PASSWORD: "true"
         MYSQL_PASSWORD: 'root'
-        MYSQL_ROOT_PASSWORD: 'root'
-    networks:
-      - example
+        MYSQL_ROOT_PASSWORD:
 
   redis:
     image: redis
@@ -63,21 +48,13 @@ services:
       - 6379:6379
     volumes:
       - ./:/var/www/html
-    networks:
-      - example
 
   node:
     image: node:22-alpine3.19
     restart: unless-stopped
     volumes:
       - ./:/var/www/html/
+    ports:
+        - 8081:5174
     tty: true
     working_dir: /var/www/html/
-    networks:
-      - example
-
-networks:
-  example:
-    driver: bridge
-    ipam:
-      driver: default

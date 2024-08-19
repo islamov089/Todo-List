@@ -1,8 +1,11 @@
-du: memory
-	docker compose up -d
+de-php:
+	docker exec -it example-php bash
 
-dup: memory
-	docker compose up
+de-node:
+	docker compose exec node sh
+
+du:
+	docker compose up -d
 
 dd:
 	docker compose down
@@ -14,43 +17,6 @@ dr:
 db:
 	docker compose up --build -d
 
-de:
-	docker exec -it example-php bash
+restart: dd du
 
-de-node:
-	docker compose exec node sh
-
-de-node-run-dev:
-	docker compose exec node npm run dev
-
-ds:
-	docker compose stop
-
-queue:
-	docker compose exec php-cli php artisan queue:work
-
-horizon:
-	docker compose exec php-cli php artisan horizon
-
-horizon-pause:
-	docker compose exec php-cli php artisan horizon:pause
-
-horizon-continue:
-	docker compose exec php-cli php artisan horizon:continue
-
-horizon-terminate:
-	docker compose exec php-cli php artisan horizon:terminate
-
-
-perm:
-	#sudo chgrp -R www-data storage bootstrap/cache
-	#sudo chmod -R ug+rwx storage bootstrap/cache
-	sudo chown www-data -R storage bootstrap/cache
-	sudo chmod 777 -R storage
-
-init: perm
-	docker exec -it example-php sh -c "composer update && php artisan key:generate && php artisan migrate --seed"
-
-
-
-rebuild: dr db init
+rebuild: dr db

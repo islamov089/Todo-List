@@ -4,7 +4,7 @@ import vue from '@vitejs/plugin-vue';
 export default defineConfig({
     plugins: [vue()],
     server: {
-        host: 'localhost',
+        host: 'node',
         port: 5174,
     },
     build: {
@@ -12,7 +12,7 @@ export default defineConfig({
     },
     resolve: {
         alias: {
-            '@': '/resources/js',
+            '@': '/var/www/html/resources/js',
         },
     },
     optimizeDeps: {

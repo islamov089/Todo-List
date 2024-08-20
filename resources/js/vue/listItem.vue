@@ -20,43 +20,30 @@ import axios from 'axios';
 export default {
   props: ['item'],
   methods: {
-    updateCheck() {
-      axios.put('api/item/' + this.item.id, {
-        item: this.item
-      })
-      .then(response => {
+    async updateCheck() {
+      try {
+        const response = await axios.put(`api/item/${this.item.id}`, {
+          item: this.item
+        });
         if (response.status === 200) {
           this.$emit('itemchanged');
         }
-      })
-      .catch(error => {
+      } catch (error) {
         console.error(error);
-      });
+      }
     },
-    removeItem() {
-      axios.delete('api/item/' + this.item.id)
-      .then(response => {
+    async removeItem() {
+      try {
+        const response = await axios.delete(`api/item/${this.item.id}`);
         if (response.status === 200) {
           this.$emit('itemchanged');
         }
-      })
-      .catch(error => {
+      } catch (error) {
         console.error(error);
-      });
+      }
     }
-  },
-removeItem(){
-  axios.delete('api/item' + this.item.id)
-  .then(response=>{
-    if(response.status==200 ){
-      this.$emit('itemchaned');
-    }
-  })
-    .catch(error=>{
-      console.log(error);
-    })
-}
-}
+  }
+};
 </script>
 
 <style scoped>

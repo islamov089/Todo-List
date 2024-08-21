@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
 use App\Models\Item;
 
 class DestroyItemController extends Controller
 {
-    
-    public function destroy(string $id)
+    public function __invoke(string $id)
     {
         $existingItem = Item::find($id);
 

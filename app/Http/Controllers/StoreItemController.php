@@ -7,8 +7,8 @@ use App\Models\Item;
 
 class StoreItemController extends Controller
 {
-   
-    public function store(Request $request)
+    
+    public function __invoke(Request $request)
     {
         $data = $request->input('item');
         $newItem = new Item();

@@ -1,7 +1,7 @@
 <template>
   <div class="todoListContainer">
     <div class="heading">
-      <h2 id="title">Todo List</h2>
+      <h2 id="title">{{ $t('title') }}</h2> 
       <add-item-form 
         v-on:reloadlist="getList" />
     </div>

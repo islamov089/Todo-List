@@ -5,16 +5,15 @@ import vue from '@vitejs/plugin-vue';
 export default defineConfig({
     plugins: [
         laravel({
-            input: ['resources/css/sapp.css', 'resources/js/app.js'],
+            input: ['resources/css/app.css', 'resources/js/app.js'],
             refresh: true,
         }),
+        vue(),
     ],
     server: {
         port: 5174,
         host: 'localhost'
-      },
-     plugins: [vue()],
-   
+    },
     build: {
         outDir: 'public',
     },
@@ -24,6 +23,8 @@ export default defineConfig({
         },
     },
     optimizeDeps: {
-        include: ['vue', 'vue-router'], 
+        include: ['vue', 'vue-router'],
     },
+    
 });
+

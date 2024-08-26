@@ -108,7 +108,7 @@ export default {
       }
     },
     formatDate(date) {
-      return moment(date).format('DD-MM-YYYY'); // Форматирование даты
+      return moment(date).format('LLLL'); 
     }
   }
 };

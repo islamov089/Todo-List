@@ -6,12 +6,14 @@ import { library } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { faPlusSquare, faTrash,faEdit } from '@fortawesome/free-solid-svg-icons';
 import store from './srore'  
+import vuetify from './plugins/vuetify'
 
 library.add(faPlusSquare, faTrash,faEdit);
 
 const app = createApp(App);
 
 app.component('font-awesome-icon', FontAwesomeIcon);
+app.use(vuetify)
 app.use(store) 
 app.use(i18n);
 app.mount('#app');

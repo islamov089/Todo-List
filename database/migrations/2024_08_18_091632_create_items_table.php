@@ -14,6 +14,8 @@ return new class extends Migration
         Schema::create('items', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->string('status')->default('todo'); // Новое поле для статуса
+            $table->date('deadline')->nullable(); // Новое поле для дедлайна
             $table->boolean('completed')->default(false);
             $table->timestamp('completed_at')->nullable();
             $table->timestamps();

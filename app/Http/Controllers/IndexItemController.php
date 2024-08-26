@@ -8,9 +8,7 @@ use Illuminate\Support\Facades\Log;
 
 class IndexItemController extends Controller
 {
-    /**
-     * Handle the incoming request.
-     */
+    
     public function __invoke()
     {
         try {

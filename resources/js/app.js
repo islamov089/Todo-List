@@ -4,10 +4,10 @@ import '../css/app.css';
 import i18n from './i18n'
 import { library } from '@fortawesome/fontawesome-svg-core'; 
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-import { faPlusSquare, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faPlusSquare, faTrash,faEdit } from '@fortawesome/free-solid-svg-icons';
 import store from './srore'  
 
-library.add(faPlusSquare, faTrash);
+library.add(faPlusSquare, faTrash,faEdit);
 
 const app = createApp(App);
 

@@ -12,7 +12,6 @@
 </template>
 
 <script>
-import axios from 'axios';
 import addItemForm from './addItemForm.vue';
 import listView from './listView.vue';
 
@@ -21,26 +20,22 @@ export default {
     addItemForm,
     listView
   },
-  data() {
-    return {
-      items: []
-    };
+  computed: {
+    items() {
+      return this.$store.getters.allItems
+    }
   },
   methods: {
     async getList() {
-      try {
-        const response = await axios.get('api/items');
-        this.items = response.data;
-      } catch (error) {
-        console.error(error);
-      }
+      await this.$store.dispatch('fetchItems')
     }
   },
   created() {
-    this.getList();
+    this.getList()
   }
 };
 </script>
+
 
 <style scoped>
 .todoListContainer {

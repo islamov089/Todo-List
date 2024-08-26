@@ -15,36 +15,21 @@
 </template>
 
 <script>
-import axios from 'axios';
-
 export default {
   props: ['item'],
   methods: {
     async updateCheck() {
-      try {
-        const response = await axios.put(`api/item/${this.item.id}`, {
-          item: this.item
-        });
-        if (response.status === 200) {
-          this.$emit('itemchanged');
-        }
-      } catch (error) {
-        console.error(error);
-      }
+      await this.$store.dispatch('updateItem', this.item)
+      this.$emit('itemchanged')
     },
     async removeItem() {
-      try {
-        const response = await axios.delete(`api/item/${this.item.id}`);
-        if (response.status === 200) {
-          this.$emit('itemchanged');
-        }
-      } catch (error) {
-        console.error(error);
-      }
+      await this.$store.dispatch('removeItem', this.item.id)
+      this.$emit('itemchanged')
     }
   }
 };
 </script>
+
 
 <style scoped>
 .completed {

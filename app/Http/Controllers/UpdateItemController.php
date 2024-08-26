@@ -11,9 +11,9 @@ use Illuminate\Support\Carbon;
 class UpdateItemController extends Controller
 {
     
-    public function __invoke(Request $request, string $id)
+    public function __invoke(Request $request, Item $existingItem)
     {
-        $existingItem = Item::find($id);
+    
 
         if ($existingItem) {
             $existingItem->completed = $request->input('item.completed') ? true : false;

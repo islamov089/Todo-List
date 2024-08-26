@@ -17,9 +17,15 @@ export default {
   props: ['items'],
   components: {
     listItem
+  },
+  watch: {
+    items(newItems) {
+      this.$emit('reloadlist')
+    }
   }
 };
 </script>
+
 
 <style scoped>
 .item {

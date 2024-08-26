@@ -10,8 +10,6 @@
 </template>
 
 <script>
-import axios from 'axios';
-
 export default {
   data() {
     return {
@@ -25,21 +23,14 @@ export default {
       if (this.item.name === '') {
         return;
       }
-      try {
-        const response = await axios.post('api/item/store', {
-          item: this.item,
-        });
-        if (response.status === 201) {
-          this.item.name = '';
-          this.$emit('reloadlist');
-        }
-      } catch (error) {
-        console.error(error);
-      }
+      await this.$store.dispatch('addItem', this.item)
+      this.item.name = ''
+      this.$emit('reloadlist')
     },
   },
 };
 </script>
+
 
 <style scoped>
 .addItem {

@@ -50,6 +50,8 @@
 </template>
 
 <script>
+import moment from 'moment';
+
 export default {
   props: ['item'],
   data() {
@@ -68,7 +70,10 @@ export default {
       this.$emit('itemchanged');
     },
     openEditModal() {
-      this.currentItem = { ...this.item }; 
+      this.currentItem = {
+        ...this.item,
+        deadline: moment(this.item.deadline).format('DD-MM-YYYY') 
+      }; 
       this.showEditModal = true;
     },
     closeEditModal() {
@@ -81,6 +86,7 @@ export default {
       }
 
       try {
+        this.currentItem.deadline = moment(this.currentItem.deadline).format('DD-MM-YYYY');
         await this.$store.dispatch('updateItem', this.currentItem);
         this.showEditModal = false;
         this.$emit('itemchanged'); 
@@ -102,7 +108,7 @@ export default {
       }
     },
     formatDate(date) {
-      return new Date(date).toLocaleDateString();
+      return moment(date).format('DD-MM-YYYY'); // Форматирование даты
     }
   }
 };
@@ -166,11 +172,11 @@ export default {
 }
 
 .editItem {
-  color: #007bff; /* Цвет для иконки редактирования */
+  color: #007bff; 
 }
 
 .trashItem {
-  color: #ff0000; /* Цвет для иконки удаления */
+  color: #ff0000; 
 }
 
 .modal-overlay {

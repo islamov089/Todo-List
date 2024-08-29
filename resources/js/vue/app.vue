@@ -2,12 +2,9 @@
   <div class="todoListContainer">
     <div class="heading">
       <h2 id="title">{{ $t('title') }}</h2> 
-      <add-item-form 
-        v-on:reloadlist="getList" />
+      <add-item-form v-on:reloadlist="getList" />
     </div>
-    <list-view 
-      :items="items" 
-      v-on:reloadlist="getList" />
+    <list-view :items="items" v-on:reloadlist="getList" />
   </div>
 </template>
 
@@ -22,24 +19,23 @@ export default {
   },
   computed: {
     items() {
-      return this.$store.getters.allItems
+      return this.$store.getters.allItems;
     }
   },
   methods: {
     async getList() {
-      await this.$store.dispatch('fetchItems')
+      await this.$store.dispatch('fetchItems');
     }
   },
   created() {
-    this.getList()
+    this.getList();
   }
 };
 </script>
 
-
 <style scoped>
 .todoListContainer {
-  width: 550px;
+  width: 800px;
   margin: auto;
   background: #f5f5f5; 
   border-radius: 10px; 

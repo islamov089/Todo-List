@@ -14,11 +14,35 @@
       <template v-slot:cell="{ column, row }">
         <span :class="getStatusClass(row[column.field])">{{ row[column.field] }}</span>
       </template>
-      <template v-slot:actions="{ row }">
-        <button class="btn btn-edit" @click="editItem(row)">Edit</button>
-        <button class="btn btn-delete" @click="deleteItem(row.id)">Delete</button>
+      <template v-slot:actions='row'>
+        <button class="btn btn-edit" @click="editItem(row.value.actions)">Edit</button>
+        <button class="btn btn-delete" @click="deleteItem(row.value.actions.id)">Delete</button>
       </template>
     </DataTable>
+
+    <div v-if="showEditPopup" class="edit-popup">
+      <div class="popup-content">
+        <h3>Edit Item</h3>
+        <label>
+          Name:
+          <input v-model="editingItem.name" type="text" />
+        </label>
+        <label>
+          Status:
+          <select v-model="editingItem.status">
+            <option value="pending">Pending</option>
+            <option value="in-progress">In Progress</option>
+            <option value="done">Done</option>
+          </select>
+        </label>
+        <label>
+          Deadline:
+          <input v-model="editingItem.deadline" type="date" />
+        </label>
+        <button @click="updateItem">Save</button>
+        <button @click="cancelEdit">Cancel</button>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -34,7 +58,9 @@ export default {
   data() {
     return {
       searchQuery: '', 
-      filteredData: [] 
+      filteredData: [],
+      showEditPopup: false,
+      editingItem: {}
     };
   },
   computed: {
@@ -46,8 +72,8 @@ export default {
         status: this.formatStatus(item.status),
         deadline: this.formatDate(item.deadline),
         created_at: this.formatDate(item.created_at),
+        actions: item
       }));
-      console.log('Formatted table data:', data); 
       return data;
     },
     columns() {
@@ -56,7 +82,7 @@ export default {
         { field: 'status', title: 'Status', width: "120px", sortable: true },
         { field: 'deadline', title: 'Deadline', type: "date", width: "150px", sortable: true },
         { field: 'created_at', title: 'Created At', type: "date", width: "150px", sortable: true },
-        { field: 'actions', title: 'Actions', width: "150px" } 
+        { field: 'actions', title: 'Actions', width: "150px" }
       ];
     }
   },
@@ -75,7 +101,7 @@ export default {
       }
     },
     formatDate(date) {
-      return moment(date).format('DD-MM-YYYY');
+      return date ? moment(date).format('YYYY-MM-DD') : '';
     },
     getStatusClass(status) {
       switch (status) {
@@ -90,14 +116,36 @@ export default {
       }
     },
     editItem(item) {
-      console.log('Editing item:', item);
+      this.editingItem = {
+        id: item.id,
+        name: item.name,
+        status: item.status,
+        deadline: this.formatDate(item.deadline)
+      };
+      this.showEditPopup = true;
     },
-    deleteItem(itemId) {
-      console.log('Deleting item with id:', itemId);
-      this.removeItem(itemId);
+    async updateItem() {
+      try {
+        this.editingItem.deadline = moment(this.editingItem.deadline).format('YYYY-MM-DD');
+        await this.$store.dispatch('updateItem', this.editingItem);
+        this.showEditPopup = false;
+        this.editingItem = {};
+        this.filterData(); 
+      } catch (error) {
+        console.error('Error updating item:', error);
+      }
+    },
+    async deleteItem(itemId) {
+      try {
+        await this.$store.dispatch('removeItem', itemId);
+        console.log('Item deleted successfully');
+      } catch (error) {
+        console.error('Error deleting item:', error);
+      }
     },
     handleSort({ field, direction }) {
-      console.log('Sorting by', field, 'in', direction, 'direction');    },
+      console.log('Sorting by', field, 'in', direction, 'direction');
+    },
     filterData() {
       const query = this.searchQuery.toLowerCase();
       this.filteredData = this.tableData.filter(item => 
@@ -105,6 +153,10 @@ export default {
           typeof val === 'string' && val.toLowerCase().includes(query)
         )
       );
+    },
+    cancelEdit() {
+      this.showEditPopup = false;
+      this.editingItem = {}; 
     }
   },
   watch: {
@@ -117,6 +169,9 @@ export default {
   }
 };
 </script>
+
+
+
 
 <style scoped>
 .data-table-container {
@@ -144,6 +199,7 @@ export default {
   cursor: pointer;
   font-size: 14px;
   color: #fff;
+  margin-right: 10px;
 }
 
 .btn-edit {
@@ -186,5 +242,25 @@ export default {
 
 .v-data-table tr:hover {
   background-color: #ddd;
+}
+
+.edit-popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.popup-content {
+  background: #fff;
+  padding: 20px;
+  border-radius: 5px;
+  max-width: 500px;
+  width: 100%;
 }
 </style>

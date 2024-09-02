@@ -1,6 +1,6 @@
 <template>
   <div>
-    <button @click="showAddModal = true">
+    <button @click="showAddModal = true" class="addButton"> 
       Add Task
     </button>
 
@@ -16,6 +16,7 @@
 
 <script>
 import Modal from './Modal.vue';
+import '../../scss/AddNewItemButton.scss'
 
 export default {
   components: {
@@ -48,13 +49,3 @@ export default {
 };
 </script>
 
-<style scoped>
-button {
-  background-color: #007bff;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  cursor: pointer;
-  border-radius: 5px;
-}
-</style>

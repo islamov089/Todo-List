@@ -11,6 +11,7 @@
 <script>
 import addItemForm from './addItemForm.vue';
 import listView from './listView.vue';
+import '../../scss/ToDoListComponents.scss'
 
 export default {
   components: {
@@ -33,7 +34,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<!-- <style scoped>
 .todoListContainer {
   width: 800px;
   margin: auto;
@@ -58,4 +59,4 @@ export default {
   background-color: #5c6bc0; 
   border-radius: 8px; 
 }
-</style>
+</style> -->

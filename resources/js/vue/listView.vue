@@ -50,6 +50,7 @@
 import DataTable from '@bhplugin/vue3-datatable';
 import { mapGetters, mapActions } from 'vuex';
 import moment from 'moment';
+import '../../scss/DataTable.scss'
 
 export default {
   components: {
@@ -173,94 +174,4 @@ export default {
 
 
 
-<style scoped>
-.data-table-container {
-  padding: 20px;
-  max-width: 1200px;
-  margin: 0 auto;
-}
 
-.search-container {
-  margin-bottom: 20px;
-}
-
-.search-input {
-  padding: 8px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  width: 100%;
-  max-width: 300px;
-}
-
-.btn {
-  padding: 8px 16px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 14px;
-  color: #fff;
-  margin-right: 10px;
-}
-
-.btn-edit {
-  background-color: #4CAF50; 
-}
-
-.btn-delete {
-  background-color: #f44336; 
-}
-
-.status-pending {
-  color: red;
-}
-
-.status-in-progress {
-  color: yellow;
-}
-
-.status-done {
-  color: green;
-}
-
-.v-data-table {
-  border-collapse: collapse;
-  width: 100%;
-}
-
-.v-data-table th, .v-data-table td {
-  text-align: left;
-  padding: 12px;
-}
-
-.v-data-table th {
-  background-color: #f2f2f2;
-}
-
-.v-data-table tr:nth-child(even) {
-  background-color: #f9f9f9;
-}
-
-.v-data-table tr:hover {
-  background-color: #ddd;
-}
-
-.edit-popup {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.popup-content {
-  background: #fff;
-  padding: 20px;
-  border-radius: 5px;
-  max-width: 500px;
-  width: 100%;
-}
-</style>

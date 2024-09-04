@@ -3,7 +3,6 @@
     <button @click="showAddModal = true" class="addButton"> 
       Add Task
     </button>
-
     <modal
       :visible="showAddModal"
       :item="newItem"

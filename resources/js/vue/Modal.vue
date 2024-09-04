@@ -3,7 +3,6 @@
     <div class="modal-content">
       <span class="close" @click="close">&times;</span>
       <h2>{{ modalTitle }}</h2>
-
       <input type="text" v-model="item.name" placeholder="Enter item name" />
 
       <label for="status">Status:</label>

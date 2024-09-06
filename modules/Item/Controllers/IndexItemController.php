@@ -1,10 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace Modules\Item\Controllers;
 
 use App\Models\Item;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Log;
+use App\Http\Controllers\Controller; 
+
 
 class IndexItemController extends Controller
 {
@@ -12,7 +14,7 @@ class IndexItemController extends Controller
     public function __invoke()
     {
         try {
-            $items = Item::orderBy('created_at', 'desc')->get();
+            $items = Item::orderByDesc('created_at')->get();
             return response()->json($items);
         } catch (\Exception $e) {
             Log::error('Failed to retrieve items: ' . $e->getMessage());

@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
-
+namespace Modules\Item\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Item;
 use Illuminate\Support\Facades\App;
+use App\Http\Controllers\Controller; 
+
 
 class DestroyItemController extends Controller
 {

@@ -14,12 +14,9 @@
 
       <label for="deadline">Deadline:</label>
       <input type="date" id="deadline" v-model="item.deadline" />
-
       <label for="file">Attach a file:</label>
       <input type="file" @change="onFileChange" />
-
       <button @click="uploadFile">Upload File</button>
-
       <button @click="confirm">Create/Update Task</button>
     </div>
   </div>
@@ -34,21 +31,21 @@
     },
     data() {
       return {
-        file: null, // Данные загружаемого файла
+        file: null, 
       }
     },
     methods: {
-      // Обработка выбора файла
+     
       onFileChange(event) {
         this.file = event.target.files[0]
       },
 
-      // Метод для закрытия окна
+      
       close() {
         this.$emit('close')
       },
 
-      // Метод для загрузки файла
+     
       async uploadFile() {
         if (!this.file) {
           alert('Please select a file to upload')
@@ -61,7 +58,7 @@
         try {
           await this.$store.dispatch('uploadFile', formData)
           alert('File uploaded successfully')
-          this.close() // Закрытие модального окна после успешной загрузки
+          this.close() 
         } catch (error) {
           console.error('Error uploading file:', error)
           alert(
@@ -70,7 +67,7 @@
         }
       },
 
-      // Метод для создания или обновления задачи
+      
       async confirm() {
         if (!this.item.name || !this.item.deadline) {
           alert('Name and deadline are required for creating/updating tasks')

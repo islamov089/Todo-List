@@ -3,7 +3,7 @@
     <div class="modal-content">
       <span class="close" @click="close">&times;</span>
       <h2>{{ modalTitle }}</h2>
-      <input type="text" v-model="item.name" placeholder="Enter item name" />
+            <input type="text" v-model="item.name" placeholder="Enter item name" />
 
       <label for="status">Status:</label>
       <select id="status" v-model="item.status">
@@ -15,7 +15,12 @@
       <label for="deadline">Deadline:</label>
       <input type="date" id="deadline" v-model="item.deadline" />
 
-      <button @click="confirm">Create Task</button>
+      <label for="file">Attach a file:</label>
+      <input type="file" @change="onFileChange" />
+
+      <button @click="uploadFile">Upload File</button>
+
+      <button @click="confirm">Create/Update Task</button>
     </div>
   </div>
 </template>
@@ -27,26 +32,65 @@ export default {
     item: Object,
     modalTitle: String
   },
+  data() {
+    return {
+      file: null, // Данные загружаемого файла
+    };
+  },
   methods: {
+    // Обработка выбора файла
+    onFileChange(event) {
+      this.file = event.target.files[0];
+    },
+    
+    // Метод для закрытия окна
     close() {
       this.$emit('close');
     },
+
+    // Метод для загрузки файла
+    async uploadFile() {
+      if (!this.file) {
+        alert('Please select a file to upload');
+        return;
+      }
+
+      const formData = new FormData();
+      formData.append('file', this.file);
+
+      try {
+        await this.$store.dispatch('uploadFile', formData);
+        alert('File uploaded successfully');
+        this.close(); // Закрытие модального окна после успешной загрузки
+      } catch (error) {
+        console.error('Error uploading file:', error);
+        alert(`Failed to upload file: ${error.response?.data?.message || error.message}`);
+      }
+    },
+
+    // Метод для создания или обновления задачи
     async confirm() {
       if (!this.item.name || !this.item.deadline) {
-        alert('Name and deadline are required');
+        alert('Name and deadline are required for creating/updating tasks');
         return;
       }
 
       try {
+        const formData = new FormData();
+        formData.append('name', this.item.name);
+        formData.append('status', this.item.status);
+        formData.append('deadline', this.item.deadline);
+
         if (this.modalTitle === 'Add New Item') {
-          await this.$store.dispatch('addItem', this.item);
+          await this.$store.dispatch('addItem', formData);
         } else {
-          await this.$store.dispatch('updateItem', this.item);
+          formData.append('id', this.item.id);
+          await this.$store.dispatch('updateItem', formData);
         }
         this.close();
         this.$emit('reloadlist');
       } catch (error) {
-        console.error('Error confirming item changes:', error);
+        console.error('Error saving task:', error);
         alert(`Failed to save item: ${error.response?.data?.message || error.message}`);
       }
     }
@@ -54,44 +98,3 @@ export default {
 };
 </script>
 
-<style scoped>
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.modal-content {
-  background: white;
-  padding: 20px;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
-  position: relative;
-  width: 80%;
-  max-width: 500px;
-}
-
-.close {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  cursor: pointer;
-  font-size: 20px;
-}
-
-label {
-  margin-top: 10px;
-  display: block;
-}
-
-input[type="date"] {
-  margin-top: 5px;
-  padding: 5px;
-  width: 100%;
-}
-</style>

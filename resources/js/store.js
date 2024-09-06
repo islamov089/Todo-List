@@ -4,7 +4,7 @@ import axios from 'axios';
 const store = createStore({
   state() {
     return {
-      items: []
+      items: [] 
     };
   },
   mutations: {
@@ -38,9 +38,9 @@ const store = createStore({
         console.error('Error fetching items:', error); 
       }
     },
-    async addItem({ commit }, item) {
+    async addItem({ commit }, formData) {
       try {
-        const response = await axios.post('api/item/store', item);
+        const response = await axios.post('api/item/store', formData);
         if (response.status === 201) {
           commit('addItem', response.data);
         }
@@ -48,9 +48,9 @@ const store = createStore({
         console.error('Error adding item:', error); 
       }
     },
-    async updateItem({ commit }, item) {
+    async updateItem({ commit }, formData) {
       try {
-        const response = await axios.put(`api/item/${item.id}`, item);
+        const response = await axios.put(`api/item/${formData.get('id')}`, formData);
         if (response.status === 200) {
           commit('updateItem', response.data);
         }
@@ -66,6 +66,19 @@ const store = createStore({
         }
       } catch (error) {
         console.error('Error removing item:', error); 
+      }
+    },
+    async uploadFile({ commit }, formData) {
+      try {
+        const response = await axios.post('/api/upload', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        });
+        console.log('File uploaded:', response.data);
+      } catch (error) {
+        console.error('Error uploading file:', error);
+        throw error;
       }
     }
   },

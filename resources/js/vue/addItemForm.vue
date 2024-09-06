@@ -1,8 +1,6 @@
 <template>
   <div>
-    <button @click="showAddModal = true" class="addButton"> 
-      Add Task
-    </button>
+    <button @click="showAddModal = true" class="addButton">Add Task</button>
     <modal
       :visible="showAddModal"
       :item="newItem"
@@ -14,38 +12,37 @@
 </template>
 
 <script>
-import Modal from './Modal.vue';
-import '../../scss/AddNewItemButton.scss'
+  import Modal from './Modal.vue'
+  import '../../scss/AddNewItemButton.scss'
 
-export default {
-  components: {
-    Modal
-  },
-  data() {
-    return {
-      showAddModal: false,
-      newItem: {
-        name: '',
-        status: 'pending',
-        deadline: ''
-      }
-    };
-  },
-  
-  methods: {
-    handleClose() {
-      this.showAddModal = false;
-      this.resetNewItem();
-      this.$emit('reloadlist'); 
+  export default {
+    components: {
+      Modal,
     },
-    resetNewItem() {
-      this.newItem = {
-        name: '',
-        status: 'pending',
-        deadline: ''
-      };
-    }
-  }
-};
-</script>
+    data() {
+      return {
+        showAddModal: false,
+        newItem: {
+          name: '',
+          status: 'pending',
+          deadline: '',
+        },
+      }
+    },
 
+    methods: {
+      handleClose() {
+        this.showAddModal = false
+        this.resetNewItem()
+        this.$emit('reloadlist')
+      },
+      resetNewItem() {
+        this.newItem = {
+          name: '',
+          status: 'pending',
+          deadline: '',
+        }
+      },
+    },
+  }
+</script>

@@ -1,42 +1,36 @@
-const path = require('path');
+const path = require('path')
 
 module.exports = {
-  entry: './resources/js/app.js',  
+  entry: './resources/js/app.js',
   output: {
     filename: 'bundle.js',
-    path: path.resolve(__dirname, 'public/js'),  
+    path: path.resolve(__dirname, 'public/js'),
   },
   module: {
     rules: [
       {
-        test: /\.scss$/,  
-        use: [
-          'style-loader',
-          'css-loader',
-          'sass-loader',
-        ],
+        test: /\.scss$/,
+        use: ['style-loader', 'css-loader', 'sass-loader'],
       },
       {
-        test: /\.js$/,  
+        test: /\.js$/,
         exclude: /node_modules/,
         use: {
           loader: 'babel-loader',
         },
       },
       {
-        test: /\.vue$/,  
+        test: /\.vue$/,
         loader: 'vue-loader',
       },
     ],
   },
   resolve: {
     alias: {
-      'vue$': 'vue/dist/vue.runtime.esm.js',
+      vue$: 'vue/dist/vue.runtime.esm.js',
     },
     extensions: ['*', '.js', '.vue', '.json'],
   },
-  plugins: [
-    new VueLoaderPlugin(),
-  ],
-  mode: 'development',  
-};
+  plugins: [new VueLoaderPlugin()],
+  mode: 'development',
+}

@@ -1,10 +1,9 @@
 {
-    "singleQuote": true,            
-    "semi": false,                  
-    "trailingComma": "all",         
-    "printWidth": 80,               
-    "tabWidth": 2,                  
-    "htmlWhitespaceSensitivity": "ignore", 
-    "vueIndentScriptAndStyle": true 
-  }
-  
+  "singleQuote": true,
+  "semi": false,
+  "trailingComma": "all",
+  "printWidth": 80,
+  "tabWidth": 2,
+  "htmlWhitespaceSensitivity": "ignore",
+  "vueIndentScriptAndStyle": true
+}

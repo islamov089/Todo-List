@@ -5,6 +5,8 @@ use App\Http\Controllers\StoreItemController;
 use App\Http\Controllers\UpdateItemController;
 use App\Http\Controllers\DestroyItemController;
 use App\Http\Controllers\IndexItemController;
+use App\Http\Controllers\UploadController;
+
 
 Route::prefix('item')->group(function () {
     Route::post('/store', StoreItemController::class)->name('item.store');
@@ -13,5 +15,9 @@ Route::prefix('item')->group(function () {
 });
 
 Route::get('/items', IndexItemController::class)->name('item.index');
+Route::get('/upload', UploadController::class)->name('item.upload');
+
+
+
 
 

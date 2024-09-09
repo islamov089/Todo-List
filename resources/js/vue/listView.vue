@@ -167,13 +167,11 @@
       async deleteItem(itemId) {
         try {
           await this.$store.dispatch('removeItem', itemId)
-          console.log('Item deleted successfully')
         } catch (error) {
           console.error('Error deleting item:', error)
         }
       },
       handleSort({ field, direction }) {
-        console.log('Sorting by', field, 'in', direction, 'direction')
       },
       filterData() {
         const query = this.searchQuery.toLowerCase()

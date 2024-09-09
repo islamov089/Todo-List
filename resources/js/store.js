@@ -9,22 +9,18 @@ const store = createStore({
   },
   mutations: {
     setItems(state, items) {
-      console.log('Setting items:', items)
       state.items = items
     },
     addItem(state, item) {
-      console.log('Adding item:', item)
       state.items.push(item)
     },
     updateItem(state, updatedItem) {
-      console.log('Updating item:', updatedItem)
       const index = state.items.findIndex((item) => item.id === updatedItem.id)
       if (index !== -1) {
         state.items[index] = updatedItem
       }
     },
     removeItem(state, itemId) {
-      console.log('Removing item with ID:', itemId)
       state.items = state.items.filter((item) => item.id !== itemId)
     },
   },
@@ -32,10 +28,8 @@ const store = createStore({
     async fetchItems({ commit }) {
       try {
         const response = await axios.get('api/items')
-        console.log('Fetched items:', response.data)
         commit('setItems', response.data)
       } catch (error) {
-        console.error('Error fetching items:', error)
       }
     },
     async addItem({ commit }, formData) {
@@ -78,7 +72,6 @@ const store = createStore({
             'Content-Type': 'multipart/form-data',
           },
         })
-        console.log('File uploaded:', response.data)
       } catch (error) {
         console.error('Error uploading file:', error)
         throw error

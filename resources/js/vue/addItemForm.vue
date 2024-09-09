@@ -66,7 +66,6 @@ export default {
     const { value: deadline } = useField('deadline');
 
     const onSubmit = handleSubmit((values) => {
-      console.log('Submitted values:', values);
     });
 
     return {

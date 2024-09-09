@@ -4,7 +4,14 @@ const messages = {
   en: {
     title: 'Todo List',
     remove: 'Remove',
+     name: 'Name',
+     status: 'Status',
+     deadline:'Deadline',
+
   },
+
+
+
   ru: {
     title: 'Список задач',
   },

@@ -2,15 +2,14 @@
 
 namespace Modules\Item\Controllers;
 
-use App\Models\Item;
-use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Log;
-use App\Http\Controllers\Controller; 
+use App\Http\Controllers\Controller;
+use Modules\Item\Models\Item;
 
 
 class IndexItemController extends Controller
 {
-    
+
     public function __invoke()
     {
         try {

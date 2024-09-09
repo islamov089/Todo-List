@@ -2,9 +2,10 @@
 
 namespace Modules\Item\Controllers;
 use Illuminate\Http\Request;
-use App\Models\Item;
+
 use Illuminate\Support\Facades\App;
-use App\Http\Controllers\Controller; 
+use App\Http\Controllers\Controller;
+use Modules\Item\Models\Item;
 
 
 class DestroyItemController extends Controller

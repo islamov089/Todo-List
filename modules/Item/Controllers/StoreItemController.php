@@ -3,8 +3,8 @@
 
 namespace Modules\Item\Controllers;
 use Illuminate\Http\Request;
-use App\Models\Item;
-use App\Http\Controllers\Controller; 
+use App\Http\Controllers\Controller;
+use Modules\Item\Models\Item;
 
 
 class StoreItemController extends Controller

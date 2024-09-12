@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Imports;
+namespace modules\Item\Imports;
 
-use Illuminate\Support\Collection;
-use Maatwebsite\Excel\Concerns\ToCollection;
-use Maatwebsite\Excel\Concerns\Importable;
 use Carbon\Carbon;
+use Illuminate\Support\Collection;
+use Maatwebsite\Excel\Concerns\Importable;
+use Maatwebsite\Excel\Concerns\ToCollection;
 
 class ItemImports implements ToCollection
 {
@@ -15,13 +15,13 @@ class ItemImports implements ToCollection
 
     public function collection(Collection $rows)
     {
-        $rows->shift(); 
+        $rows->shift();
 
         foreach ($rows as $row) {
             $this->items[] = [
-                'name' => trim($row[0]), 
+                'name' => trim($row[0]),
                 'status' => trim($row[1]),
-                'deadline' => $this->convertToDate(trim($row[2])), 
+                'deadline' => $this->convertToDate(trim($row[2])),
                 'completed' => isset($row[3]) ? (bool)trim($row[3]) : false,
                 'completed_at' => isset($row[4]) ? $this->convertToDate(trim($row[4])) : null,
             ];
@@ -32,7 +32,7 @@ class ItemImports implements ToCollection
     {
         if (is_numeric($value)) {
             $date = Carbon::createFromFormat('Y-m-d', '1900-01-01')
-                          ->addDays($value - 2); 
+                          ->addDays($value - 2);
             return $date->format('Y-m-d');
         }
 

@@ -15,9 +15,8 @@ Route::middleware('api')->prefix('api')->group(function(){
         Route::put('/{id}', UpdateItemController::class)->name('item.update');
         Route::delete('/{id}', DestroyItemController::class)->name('item.destroy');
     });
-    
-    Route::get('/items', IndexItemController::class)->name('item.index');
 
+    Route::get('/items', IndexItemController::class)->name('item.index');
+    Route::get('/upload', [\Modules\Item\Controllers\UploadController::class, 'upload'])->name('item.upload');
 });
 
-// Route::get('/upload', UploadController::class)->name('item.upload');

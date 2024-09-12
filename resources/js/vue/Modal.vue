@@ -3,98 +3,130 @@
     <div class="modal-content">
       <span class="close" @click="close">&times;</span>
       <h2>{{ modalTitle }}</h2>
-      <input type="text" v-model="item.name" placeholder="Enter item name" />
+      
+      <el-form :model="item" label-width="120px">
+        <el-form-item label="Task Name">
+          <el-input v-model="item.name" placeholder="Enter item name" />
+        </el-form-item>
 
-      <label for="status">Status:</label>
-      <select id="status" v-model="item.status">
-        <option value="pending">Pending</option>
-        <option value="in-progress">In Progress</option>
-        <option value="done">Done</option>
-      </select>
+        <el-form-item label="Status">
+          <el-select v-model="item.status" placeholder="Select status">
+            <el-option label="Pending" value="pending" />
+            <el-option label="In Progress" value="in-progress" />
+            <el-option label="Done" value="done" />
+          </el-select>
+        </el-form-item>
 
-      <label for="deadline">Deadline:</label>
-      <input type="date" id="deadline" v-model="item.deadline" />
-      <label for="file">Attach a file:</label>
-      <input type="file" @change="onFileChange" />
-      <button @click="uploadFile">Upload File</button>
-      <button @click="confirm">Create/Update Task</button>
+        <el-form-item label="Deadline">
+          <el-date-picker v-model="item.deadline" type="date" placeholder="Select deadline" />
+        </el-form-item>
+
+        <el-form-item label="Attach a file">
+          <el-upload
+            action="#"
+            :show-file-list="false"
+            :auto-upload="false"
+            :before-upload="beforeFileUpload"
+            @change="onFileChange"
+          >
+            <el-button>Choose File</el-button>
+          </el-upload>
+        </el-form-item>
+
+        <el-form-item>
+          <el-button type="primary" @click="confirm">Create/Update Task</el-button>
+          <el-button @click="close">Cancel</el-button>
+        </el-form-item>
+      </el-form>
     </div>
   </div>
 </template>
 
 <script>
-  export default {
-    props: {
-      visible: Boolean,
-      item: Object,
-      modalTitle: String,
+export default {
+  props: {
+    visible: Boolean,
+    item: Object,
+    modalTitle: String,
+  },
+  data() {
+    return {
+      file: null,
+    };
+  },
+  methods: {
+    onFileChange(file) {
+      this.file = file.raw; 
     },
-    data() {
-      return {
-        file: null, 
+    
+    beforeFileUpload(file) {
+      this.file = file.raw; 
+      return false; 
+    },
+
+    close() {
+      this.$emit('close');
+    },
+
+    async confirm() {
+      if (!this.item.name || !this.item.deadline) {
+        alert('Name and deadline are required for creating/updating tasks');
+        return;
+      }
+
+      try {
+        const formData = new FormData();
+        formData.append('name', this.item.name);
+        formData.append('status', this.item.status);
+        formData.append('deadline', this.item.deadline.toISOString().split('T')[0]); 
+
+        if (this.file) {
+          formData.append('file', this.file);
+        }
+
+        if (this.modalTitle === 'Add New Item') {
+          await this.$store.dispatch('addItem', formData);
+        } else {
+          formData.append('id', this.item.id);
+          await this.$store.dispatch('updateItem', formData);
+        }
+        
+        this.close();
+        this.$emit('reloadlist');
+      } catch (error) {
+        console.error('Error saving task:', error);
+        alert(`Failed to save item: ${error.response?.data?.message || error.message}`);
       }
     },
-    methods: {
-     
-      onFileChange(event) {
-        this.file = event.target.files[0]
-      },
-
-      
-      close() {
-        this.$emit('close')
-      },
-
-     
-      async uploadFile() {
-        if (!this.file) {
-          alert('Please select a file to upload')
-          return
-        }
-
-        const formData = new FormData()
-        formData.append('file', this.file)
-
-        try {
-          await this.$store.dispatch('uploadFile', formData)
-          alert('File uploaded successfully')
-          this.close() 
-        } catch (error) {
-          console.error('Error uploading file:', error)
-          alert(
-            `Failed to upload file: ${error.response?.data?.message || error.message}`,
-          )
-        }
-      },
-
-      
-      async confirm() {
-        if (!this.item.name || !this.item.deadline) {
-          alert('Name and deadline are required for creating/updating tasks')
-          return
-        }
-
-        try {
-          const formData = new FormData()
-          formData.append('name', this.item.name)
-          formData.append('status', this.item.status)
-          formData.append('deadline', this.item.deadline)
-
-          if (this.modalTitle === 'Add New Item') {
-            await this.$store.dispatch('addItem', formData)
-          } else {
-            formData.append('id', this.item.id)
-            await this.$store.dispatch('updateItem', formData)
-          }
-          this.close()
-          this.$emit('reloadlist')
-        } catch (error) {
-          console.error('Error saving task:', error)
-          alert(
-            `Failed to save item: ${error.response?.data?.message || error.message}`,
-          )
-        }
-      },
-    },
-  }
+  },
+};
 </script>
+
+<style scoped>
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  width: 400px;
+  position: relative;
+}
+
+.close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
+}
+</style>

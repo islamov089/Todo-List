@@ -1,8 +1,7 @@
 <template>
   <div class="data-table-container">
     <div class="search-container">
-      <input
-        type="text"
+      <el-input
         v-model="searchQuery"
         @input="filterData"
         placeholder="Search..."
@@ -22,40 +21,43 @@
         </span>
       </template>
       <template v-slot:actions="row">
-        <button class="btn btn-edit" @click="editItem(row.value.actions)">
+        <el-button type="primary" @click="editItem(row.value.actions)">
           Edit
-        </button>
-        <button
-          class="btn btn-delete"
-          @click="deleteItem(row.value.actions.id)"
-        >
+        </el-button>
+        <el-button type="danger" @click="deleteItem(row.value.actions.id)">
           Delete
-        </button>
+        </el-button>
       </template>
     </DataTable>
 
     <div v-if="showEditPopup" class="edit-popup">
-      <div class="popup-content">
+      <el-card class="popup-content">
         <h3>Edit Item</h3>
-        <label>
-          Name:
-          <input v-model="editingItem.name" type="text" />
-        </label>
-        <label>
-          Status:
-          <select v-model="editingItem.status">
-            <option value="pending">Pending</option>
-            <option value="in-progress">In Progress</option>
-            <option value="done">Done</option>
-          </select>
-        </label>
-        <label>
-          Deadline:
-          <input v-model="editingItem.deadline" type="date" />
-        </label>
-        <button @click="updateItem">Save</button>
-        <button @click="cancelEdit">Cancel</button>
-      </div>
+        <el-form :model="editingItem" label-position="top">
+          <el-form-item label="Name">
+            <el-input v-model="editingItem.name" />
+          </el-form-item>
+          <el-form-item label="Status">
+            <el-select v-model="editingItem.status">
+              <el-option value="pending" label="Pending" />
+              <el-option value="in-progress" label="In Progress" />
+              <el-option value="done" label="Done" />
+            </el-select>
+          </el-form-item>
+          <el-form-item label="Deadline">
+            <el-date-picker
+              v-model="editingItem.deadline"
+              type="date"
+              format="yyyy-MM-dd"
+              value-format="yyyy-MM-dd"
+            />
+          </el-form-item>
+          <el-form-item>
+            <el-button type="primary" @click="updateItem">Save</el-button>
+            <el-button @click="cancelEdit">Cancel</el-button>
+          </el-form-item>
+        </el-form>
+      </el-card>
     </div>
   </div>
 </template>
@@ -64,7 +66,9 @@
   import DataTable from '@bhplugin/vue3-datatable'
   import { mapGetters, mapActions } from 'vuex'
   import moment from 'moment'
-  import '../../scss/DataTable.scss'
+  import 'element-plus/dist/index.css';
+
+
 
   export default {
     components: {

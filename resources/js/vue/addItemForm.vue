@@ -1,19 +1,22 @@
 <template>
-  <el-button @click="showAddModal = true" class="addButton">Add Task</el-button>
-  <modal
-    :visible="showAddModal"
-    :item="newItem"
-    modalTitle="Add New Item"
-    @close="handleClose"
-    @reloadlist="handleReloadList"
-  />
+  <div>
+    <el-button @click="showAddModal = true" class="addButton">Add task</el-button>
+    <el-button @click="exportItems" class="exportButton">Export task</el-button>
+    <modal
+      :visible="showAddModal"
+      :item="newItem"
+      modalTitle="Добавить новую задачу"
+      @close="handleClose"
+      @reloadlist="handleReloadList"
+    />
+  </div>
 </template>
 
 <script>
 import Modal from './Modal.vue';
 import { ElButton } from 'element-plus';
 import { defineComponent, ref } from 'vue';
-
+import { useStore } from 'vuex';
 
 export default defineComponent({
   components: {
@@ -21,6 +24,7 @@ export default defineComponent({
     ElButton,
   },
   setup() {
+    const store = useStore();
     const showAddModal = ref(false);
     const newItem = ref({
       name: '',
@@ -29,7 +33,7 @@ export default defineComponent({
     });
 
     const handleReloadList = (newData) => {
-      console.log('New task data:', newData);
+      console.log('Новые данные задачи:', newData);
       showAddModal.value = false;
     };
 
@@ -37,14 +41,21 @@ export default defineComponent({
       showAddModal.value = false;
     };
 
+    const exportItems = async () => {
+      try {
+        await store.dispatch('exportItems');
+      } catch (error) {
+        console.error('Ошибка при экспорте:', error);
+      }
+    };
+
     return {
       showAddModal,
       newItem,
       handleReloadList,
       handleClose,
+      exportItems,
     };
   },
 });
 </script>
-
-

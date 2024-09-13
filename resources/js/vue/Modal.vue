@@ -3,7 +3,7 @@
     <div class="modal-content">
       <span class="close" @click="close">&times;</span>
       <h2>{{ modalTitle }}</h2>
-      
+
       <el-form :model="item" label-width="120px">
         <el-form-item label="Task Name">
           <el-input v-model="item.name" placeholder="Enter item name" />
@@ -49,6 +49,7 @@ export default {
     item: Object,
     modalTitle: String,
   },
+  emits: ['close', 'reloadlist'], 
   data() {
     return {
       file: null,
@@ -56,11 +57,11 @@ export default {
   },
   methods: {
     onFileChange(file) {
-      this.file = file.raw; 
+      this.file = file.raw;
     },
     
     beforeFileUpload(file) {
-      this.file = file.raw; 
+      this.file = file.raw;
       return false; 
     },
 
@@ -78,7 +79,7 @@ export default {
         const formData = new FormData();
         formData.append('name', this.item.name);
         formData.append('status', this.item.status);
-        formData.append('deadline', this.item.deadline.toISOString().split('T')[0]); 
+        formData.append('deadline', this.item.deadline.toISOString().split('T')[0]);
 
         if (this.file) {
           formData.append('file', this.file);
@@ -90,9 +91,9 @@ export default {
           formData.append('id', this.item.id);
           await this.$store.dispatch('updateItem', formData);
         }
-        
+
         this.close();
-        this.$emit('reloadlist');
+        this.$emit('reloadlist', this.item); 
       } catch (error) {
         console.error('Error saving task:', error);
         alert(`Failed to save item: ${error.response?.data?.message || error.message}`);

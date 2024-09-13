@@ -8,6 +8,8 @@ use Modules\Item\Controllers\UpdateItemController;
 use Modules\Item\Controllers\DestroyItemController;
 use Modules\Item\Controllers\IndexItemController;
 use Modules\Item\Controllers\UploadController;
+use Modules\Item\Controllers\ExportController;
+
 
 Route::middleware('api')->prefix('api')->group(function(){
     Route::prefix('item')->group(function () {
@@ -17,6 +19,9 @@ Route::middleware('api')->prefix('api')->group(function(){
     });
 
     Route::get('/items', IndexItemController::class)->name('item.index');
-    Route::get('/upload', [\Modules\Item\Controllers\UploadController::class, 'upload'])->name('item.upload');
+    Route::post('/upload', UploadController::class)->name('item.upload');
+    Route::get('/export', [ExportController::class, 'export'])->name('export.items');
+
+
 });
 

@@ -1,30 +1,32 @@
 <?php
 
-namespace modules\Item\Imports;
+namespace Modules\Item\Imports;
 
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\ToCollection;
+use Modules\Item\Models\Item; 
 
 class ItemImports implements ToCollection
 {
     use Importable;
 
-    private $items = [];
-
     public function collection(Collection $rows)
     {
+        
         $rows->shift();
-
+        
         foreach ($rows as $row) {
-            $this->items[] = [
-                'name' => trim($row[0]),
-                'status' => trim($row[1]),
-                'deadline' => $this->convertToDate(trim($row[2])),
-                'completed' => isset($row[3]) ? (bool)trim($row[3]) : false,
-                'completed_at' => isset($row[4]) ? $this->convertToDate(trim($row[4])) : null,
-            ];
+            Item::updateOrCreate(
+                ['name' => trim($row[0])], 
+                [
+                    'status' => trim($row[1]),
+                    'deadline' => $this->convertToDate(trim($row[2])),
+                    'completed' => isset($row[3]) ? (bool)trim($row[3]) : false,
+                    'completed_at' => isset($row[4]) ? $this->convertToDate(trim($row[4])) : null,
+                ]
+            );
         }
     }
 
@@ -42,10 +44,5 @@ class ItemImports implements ToCollection
         } catch (\Exception $e) {
             return null;
         }
-    }
-
-    public function getItems()
-    {
-        return $this->items;
     }
 }

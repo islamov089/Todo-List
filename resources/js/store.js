@@ -30,6 +30,7 @@ const store = createStore({
         const response = await axios.get('api/items')
         commit('setItems', response.data)
       } catch (error) {
+        console.error('Error fetching items:', error)
       }
     },
     async addItem({ commit }, formData) {
@@ -75,6 +76,26 @@ const store = createStore({
       } catch (error) {
         console.error('Error uploading file:', error)
         throw error
+      }
+    },
+    async exportItems() {
+      try {
+        const response = await axios({
+          url: '/api/export',
+          method: 'GET',
+          responseType: 'blob', 
+        });
+
+      
+        const url = window.URL.createObjectURL(new Blob([response.data]));
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', 'items.xlsx'); 
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+      } catch (error) {
+        console.error('Error exporting items:', error);
       }
     },
   },

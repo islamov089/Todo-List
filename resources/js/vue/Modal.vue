@@ -43,6 +43,8 @@
 </template>
 
 <script>
+import moment from 'moment';
+
 export default {
   props: {
     visible: Boolean,
@@ -79,7 +81,8 @@ export default {
         const formData = new FormData();
         formData.append('name', this.item.name);
         formData.append('status', this.item.status);
-        formData.append('deadline', this.item.deadline.toISOString().split('T')[0]);
+        formData.append('deadline', moment(this.item.deadline).format('YYYY-MM-DD'));
+
 
         if (this.file) {
           formData.append('file', this.file);

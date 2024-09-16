@@ -18,3 +18,7 @@ yarn-error.log
 /.fleet
 /.idea
 /.vscode
+*.sock
+*.ib_buffer_pool
+*.ib*
+ib_buffer_pool

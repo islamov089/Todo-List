@@ -6,7 +6,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\ToCollection;
-use Modules\Item\Models\Item; 
+use Modules\Item\Models\Item;
 
 class ItemImports implements ToCollection
 {
@@ -14,19 +14,31 @@ class ItemImports implements ToCollection
 
     public function collection(Collection $rows)
     {
-        
-        $rows->shift();
-        
-        foreach ($rows as $row) {
+        $rows->shift(); 
+
+        foreach ($this->rowGenerator($rows) as $row) {
             Item::updateOrCreate(
-                ['name' => trim($row[0])], 
+                ['name' => trim($row['name'])], 
                 [
-                    'status' => trim($row[1]),
-                    'deadline' => $this->convertToDate(trim($row[2])),
-                    'completed' => isset($row[3]) ? (bool)trim($row[3]) : false,
-                    'completed_at' => isset($row[4]) ? $this->convertToDate(trim($row[4])) : null,
+                    'status' => trim($row['status']),
+                    'deadline' => $this->convertToDate(trim($row['deadline'])),
+                    'completed' => isset($row['completed']) ? (bool)trim($row['completed']) : false,
+                    'completed_at' => isset($row['completed_at']) ? $this->convertToDate(trim($row['completed_at'])) : null,
                 ]
             );
+        }
+    }
+
+    private function rowGenerator($rows)
+    {
+        foreach ($rows as $row) {
+            yield [
+                'name' => $row[0],
+                'status' => $row[1],
+                'deadline' => $row[2],
+                'completed' => $row[3] ?? null,
+                'completed_at' => $row[4] ?? null,
+            ];
         }
     }
 

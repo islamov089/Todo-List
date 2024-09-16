@@ -1,17 +1,25 @@
 <?php
 
-
 namespace Modules\Item\Exports;
 
 use Modules\Item\Models\Item;
-use Maatwebsite\Excel\Concerns\FromCollection;
+use Maatwebsite\Excel\Concerns\FromQuery;
 use Maatwebsite\Excel\Concerns\WithHeadings;
+use Maatwebsite\Excel\Concerns\ShouldAutoSize;
+use Maatwebsite\Excel\Concerns\WithBatchInserts;
 
-class ItemsExport implements FromCollection, WithHeadings
+class ItemsExport implements FromQuery, WithHeadings, ShouldAutoSize, WithBatchInserts
 {
-    public function collection()
+    protected $limit;
+
+    public function __construct($limit = 5)
     {
-        return Item::all();
+        $this->limit = $limit;
+    }
+
+    public function query()
+    {
+        return Item::query()->limit($this->limit);
     }
 
     public function headings(): array
@@ -26,5 +34,10 @@ class ItemsExport implements FromCollection, WithHeadings
             'Created At',
             'Updated At',
         ];
+    }
+
+    public function batchSize(): int
+    {
+        return 5; 
     }
 }

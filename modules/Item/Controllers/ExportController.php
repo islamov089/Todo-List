@@ -12,6 +12,7 @@ class ExportController extends Controller
 {
     public function export()
     {
-        return Excel::download(new ItemsExport(), 'items.xlsx');
+        return Excel::download(new ItemsExport(5), 'items.xlsx');
+
     }
 }

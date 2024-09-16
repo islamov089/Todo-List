@@ -33,7 +33,6 @@ export default defineComponent({
     });
 
     const handleReloadList = (newData) => {
-      console.log('Новые данные задачи:', newData);
       showAddModal.value = false;
     };
 
@@ -45,7 +44,6 @@ export default defineComponent({
       try {
         await store.dispatch('exportItems');
       } catch (error) {
-        console.error('Ошибка при экспорте:', error);
       }
     };
 

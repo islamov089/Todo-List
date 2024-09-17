@@ -8,11 +8,11 @@
         </span>
         <div class="itemMeta">
           <p>
-            Status:
+            {{ $t('status') }}:
             <span :class="item.status">{{ formatStatus(item.status) }}</span>
           </p>
-          <p>Deadline: {{ formatDate(item.deadline) }}</p>
-          <p>Created At: {{ formatDate(item.created_at) }}</p>
+          <p>{{ $t('deadline') }}: {{ formatDate(item.deadline) }}</p>
+          <p>{{ $t('createdAt') }}: {{ formatDate(item.created_at) }}</p>
         </div>
       </div>
       <div class="itemActions">
@@ -28,30 +28,29 @@
     <div v-if="showEditModal" class="modal-overlay">
       <div class="modal-content">
         <span class="close" @click="closeEditModal">&times;</span>
-        <h2>Edit Item</h2>
+        <h2>{{ $t('editItem') }}</h2>
 
         <input
           type="text"
           v-model="currentItem.name"
-          placeholder="Enter item name"
+          :placeholder="$t('enterItemName')"
         />
 
-        <label for="status">Status:</label>
+        <label for="status">{{ $t('status') }}:</label>
         <select id="status" v-model="currentItem.status">
-          <option value="pending">Pending</option>
-          <option value="in-progress">In Progress</option>
-          <option value="done">Done</option>
+          <option value="pending">{{ $t('statusPending') }}</option>
+          <option value="in-progress">{{ $t('statusInProgress') }}</option>
+          <option value="done">{{ $t('statusDone') }}</option>
         </select>
 
-        <label for="deadline">Deadline:</label>
+        <label for="deadline">{{ $t('deadline') }}:</label>
         <input type="date" id="deadline" v-model="currentItem.deadline" />
 
-        <button @click="confirmEditItem">Save Changes</button>
+        <button @click="confirmEditItem">{{ $t('saveChanges') }}</button>
       </div>
     </div>
   </div>
 </template>
-
 <script>
   import moment from 'moment'
 
@@ -75,7 +74,7 @@
       openEditModal() {
         this.currentItem = {
           ...this.item,
-          deadline: moment(this.item.deadline).format('DD-MM-YYYY'),
+          deadline: moment(this.item.deadline).format('YYYY-MM-DD'),
         }
         this.showEditModal = true
       },
@@ -84,13 +83,13 @@
       },
       async confirmEditItem() {
         if (this.currentItem.name === '' || this.currentItem.deadline === '') {
-          alert('Name and deadline are required')
+          alert(this.$t('nameAndDeadlineRequired'))
           return
         }
 
         try {
           this.currentItem.deadline = moment(this.currentItem.deadline).format(
-            'DD-MM-YYYY',
+            'YYYY-MM-DD',
           )
           await this.$store.dispatch('updateItem', this.currentItem)
           this.showEditModal = false
@@ -98,20 +97,22 @@
         } catch (error) {
           console.error('Error confirming item update:', error)
           alert(
-            `Failed to update item: ${error.response?.data?.message || error.message}`,
+            this.$t('failedToUpdateItem', {
+              message: error.response?.data?.message || error.message,
+            }),
           )
         }
       },
       formatStatus(status) {
         switch (status) {
           case 'pending':
-            return 'Pending'
+            return this.$t('statusPending')
           case 'in-progress':
-            return 'In Progress'
+            return this.$t('statusInProgress')
           case 'done':
-            return 'Done'
+            return this.$t('statusDone')
           default:
-            return 'Unknown'
+            return this.$t('statusUnknown')
         }
       },
       formatDate(date) {

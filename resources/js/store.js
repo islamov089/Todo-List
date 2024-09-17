@@ -83,19 +83,18 @@ const store = createStore({
         const response = await axios({
           url: '/api/export',
           method: 'GET',
-          responseType: 'blob', 
-        });
+          responseType: 'blob',
+        })
 
-      
-        const url = window.URL.createObjectURL(new Blob([response.data]));
-        const link = document.createElement('a');
-        link.href = url;
-        link.setAttribute('download', 'items.xlsx'); 
-        document.body.appendChild(link);
-        link.click();
-        link.remove();
+        const url = window.URL.createObjectURL(new Blob([response.data]))
+        const link = document.createElement('a')
+        link.href = url
+        link.setAttribute('download', 'items.xlsx')
+        document.body.appendChild(link)
+        link.click()
+        link.remove()
       } catch (error) {
-        console.error('Error exporting items:', error);
+        console.error('Error exporting items:', error)
       }
     },
   },

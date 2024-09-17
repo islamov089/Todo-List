@@ -66,9 +66,7 @@
   import DataTable from '@bhplugin/vue3-datatable'
   import { mapGetters, mapActions } from 'vuex'
   import moment from 'moment'
-  import 'element-plus/dist/index.css';
-
-
+  import 'element-plus/dist/index.css'
 
   export default {
     components: {
@@ -175,8 +173,7 @@
           console.error('Error deleting item:', error)
         }
       },
-      handleSort({ field, direction }) {
-      },
+      handleSort({ field, direction }) {},
       filterData() {
         const query = this.searchQuery.toLowerCase()
         this.filteredData = this.tableData.filter((item) =>

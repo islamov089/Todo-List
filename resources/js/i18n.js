@@ -39,7 +39,7 @@ const messages = {
     nameAndDeadlineRequired: 'Name and deadline are required',
     failedToUpdateItem: 'Failed to update item: {message}',
     statusUnknown: 'Unknown status',
-    testCommit2: 'Commit2',
+    testCommit4: 'Commit4',
   },
 
   ru: {

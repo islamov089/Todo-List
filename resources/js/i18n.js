@@ -25,8 +25,7 @@ const messages = {
     chooseFile: 'Choose File(.xlsx)',
     createUpdateTask: 'Create/Update Task',
     cancel: 'Cancel',
-    nameAndDeadlineRequired:
-      'Name and deadline are required for creating/updating tasks',
+    nameAndDeadlineRequired: 'Name and deadline are required for creating/updating tasks',
     addNewItem: 'Add New Item',
     failedToSaveItem: 'Failed to save item: {message}',
     createdAt: 'Created At',
@@ -39,7 +38,6 @@ const messages = {
     nameAndDeadlineRequired: 'Name and deadline are required',
     failedToUpdateItem: 'Failed to update item: {message}',
     statusUnknown: 'Unknown status',
-    testCommit4: 'Commit4',
   },
 
   ru: {

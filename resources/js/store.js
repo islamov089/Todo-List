@@ -1,5 +1,7 @@
 import { createStore } from 'vuex'
 import axios from 'axios'
+import { saveAs } from 'file-saver'
+
 
 const store = createStore({
   state() {
@@ -7,6 +9,7 @@ const store = createStore({
       items: [],
     }
   },
+
   mutations: {
     setItems(state, items) {
       state.items = items
@@ -24,6 +27,7 @@ const store = createStore({
       state.items = state.items.filter((item) => item.id !== itemId)
     },
   },
+
   actions: {
     async fetchItems({ commit }) {
       try {
@@ -33,6 +37,7 @@ const store = createStore({
         console.error('Error fetching items:', error)
       }
     },
+
     async addItem({ commit }, formData) {
       try {
         const response = await axios.post('api/item/store', formData)
@@ -43,6 +48,7 @@ const store = createStore({
         console.error('Error adding item:', error)
       }
     },
+
     async updateItem({ commit }, formData) {
       try {
         const response = await axios.put(
@@ -56,6 +62,7 @@ const store = createStore({
         console.error('Error updating item:', error)
       }
     },
+
     async removeItem({ commit }, itemId) {
       try {
         const response = await axios.delete(`api/item/${itemId}`)
@@ -66,6 +73,7 @@ const store = createStore({
         console.error('Error removing item:', error)
       }
     },
+
     async uploadFile({ commit }, formData) {
       try {
         const response = await axios.post('/api/upload', formData, {
@@ -78,25 +86,15 @@ const store = createStore({
         throw error
       }
     },
+
     async exportItems() {
       try {
-        const response = await axios({
-          url: '/api/export',
-          method: 'GET',
-          responseType: 'blob',
-        })
-
-        const url = window.URL.createObjectURL(new Blob([response.data]))
-        const link = document.createElement('a')
-        link.href = url
-        link.setAttribute('download', 'items.xlsx')
-        document.body.appendChild(link)
-        link.click()
-        link.remove()
+        const response = await axios.get('/api/export', { responseType: 'blob' })
+        saveAs(new Blob([response.data]), 'items.xlsx')
       } catch (error) {
         console.error('Error exporting items:', error)
       }
-    },
+    }
   },
   getters: {
     allItems(state) {

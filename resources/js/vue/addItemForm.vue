@@ -42,11 +42,17 @@
         showAddModal.value = false
       }
 
-      const exportItems = async () => {
-        try {
-          await store.dispatch('exportItems')
-        } catch (error) {}
-      }
+      const exportItems = () => {
+      store.dispatch('exportItems')
+      .then(() => {
+      console.log('Items exported successfully')
+    })
+      .catch(error => {
+      console.error('Error during export:', error)  
+      alert(`Failed to export items: ${error.message || 'Unknown error'}`)  
+    })
+}
+
 
       return {
         showAddModal,

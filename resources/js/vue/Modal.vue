@@ -49,98 +49,73 @@
 </template>
 
 <script>
-  import moment from 'moment'
+import moment from 'moment'
 
-  export default {
-    props: {
-      visible: Boolean,
-      item: Object,
-      modalTitle: String,
+export default {
+  props: {
+    visible: Boolean,
+    item: Object,
+    modalTitle: String,
+  },
+
+  emits: ['close', 'reloadlist'],
+
+  data() {
+    return {
+      file: null,
+    }
+  },
+  methods: {
+    onFileChange(file) {
+      this.file = file.raw
     },
-    emits: ['close', 'reloadlist'],
-    data() {
-      return {
-        file: null,
+
+    beforeFileUpload(file) {
+      this.file = file.raw
+      return false
+    },
+
+    close() {
+      this.$emit('close')
+    },
+
+    async confirm() {
+      if (!this.item.name || !this.item.deadline) {
+        alert(this.$t('nameAndDeadlineRequired'))
+        return
+      }
+
+      try {
+        const formData = new FormData()
+        formData.append('name', this.item.name)
+        formData.append('status', this.item.status)
+        formData.append('deadline', moment(this.item.deadline).format('YYYY-MM-DD'))
+
+        if (this.file) {
+          formData.append('file', this.file)
+        }
+
+        if (this.modalTitle === this.$t('addNewItem')) {
+          await this.$store.dispatch('addItem', formData)
+        } else {
+          formData.append('id', this.item.id)
+          await this.$store.dispatch('updateItem', formData)
+        }
+
+        this.close()
+        this.$emit('reloadlist', this.item)
+      } catch (error) {
+        console.error(this.$t('savingTaskError'), error)
+        alert(
+          this.$t('failedToSaveItem', {
+            message: error.response?.data?.message || error.message,
+          })
+        )
       }
     },
-    methods: {
-      onFileChange(file) {
-        this.file = file.raw
-      },
+  },
+}
 
-      beforeFileUpload(file) {
-        this.file = file.raw
-        return false
-      },
-
-      close() {
-        this.$emit('close')
-      },
-
-      async confirm() {
-        if (!this.item.name || !this.item.deadline) {
-          alert('Name and deadline are required for creating/updating tasks')
-          return
-        }
-
-        try {
-          const formData = new FormData()
-          formData.append('name', this.item.name)
-          formData.append('status', this.item.status)
-          formData.append(
-            'deadline',
-            moment(this.item.deadline).format('YYYY-MM-DD'),
-          )
-
-          if (this.file) {
-            formData.append('file', this.file)
-          }
-
-          if (this.modalTitle === 'Add New Item') {
-            await this.$store.dispatch('addItem', formData)
-          } else {
-            formData.append('id', this.item.id)
-            await this.$store.dispatch('updateItem', formData)
-          }
-
-          this.close()
-          this.$emit('reloadlist', this.item)
-        } catch (error) {
-          console.error('Error saving task:', error)
-          alert(
-            `Failed to save item: ${error.response?.data?.message || error.message}`,
-          )
-        }
-      },
-    },
-  }
 </script>
 
-<style scoped>
-  .modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.6);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
 
-  .modal-content {
-    background: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    width: 400px;
-    position: relative;
-  }
-
-  .close {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    cursor: pointer;
-  }
-</style>

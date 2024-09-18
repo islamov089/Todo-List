@@ -18,16 +18,19 @@
       addItemForm,
       listView,
     },
+
     computed: {
       items() {
         return this.$store.getters.allItems
       },
     },
+
     methods: {
       async getList() {
         await this.$store.dispatch('fetchItems')
       },
     },
+    
     created() {
       this.getList()
     },

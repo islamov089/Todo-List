@@ -1,7 +1,11 @@
 <template>
   <div>
     <div class="item">
-      <input type="checkbox" @change="updateCheck" v-model="item.completed" />
+      <input
+        type="checkbox"
+        @change="updateCheck"
+        v-model="item.completed"
+      />
       <div class="itemDetails">
         <span :class="[item.completed ? 'completed' : '', 'itemText']">
           {{ item.name }}
@@ -9,10 +13,16 @@
         <div class="itemMeta">
           <p>
             {{ $t('status') }}:
-            <span :class="item.status">{{ formatStatus(item.status) }}</span>
+            <span :class="item.status">
+              {{ formatStatus(item.status) }}
+            </span>
           </p>
-          <p>{{ $t('deadline') }}: {{ formatDate(item.deadline) }}</p>
-          <p>{{ $t('createdAt') }}: {{ formatDate(item.created_at) }}</p>
+          <p>
+            {{ $t('deadline') }}: {{ formatDate(item.deadline) }}
+          </p>
+          <p>
+            {{ $t('createdAt') }}: {{ formatDate(item.created_at) }}
+          </p>
         </div>
       </div>
       <div class="itemActions">
@@ -36,21 +46,30 @@
           :placeholder="$t('enterItemName')"
         />
 
-        <label for="status">{{ $t('status') }}:</label>
+        <label for="status">
+          {{ $t('status') }}:
+        </label>
         <select id="status" v-model="currentItem.status">
           <option value="pending">{{ $t('statusPending') }}</option>
           <option value="in-progress">{{ $t('statusInProgress') }}</option>
           <option value="done">{{ $t('statusDone') }}</option>
         </select>
 
-        <label for="deadline">{{ $t('deadline') }}:</label>
-        <input type="date" id="deadline" v-model="currentItem.deadline" />
+        <label for="deadline">
+          {{ $t('deadline') }}:
+        </label>
+        <input
+          type="date"
+          id="deadline"
+          v-model="currentItem.deadline"
+        />
 
         <button @click="confirmEditItem">{{ $t('saveChanges') }}</button>
       </div>
     </div>
   </div>
 </template>
+
 <script>
   import moment from 'moment'
 
@@ -67,10 +86,12 @@
         await this.$store.dispatch('updateItem', this.item)
         this.$emit('itemchanged')
       },
+
       async removeItem() {
         await this.$store.dispatch('removeItem', this.item.id)
         this.$emit('itemchanged')
       },
+      
       openEditModal() {
         this.currentItem = {
           ...this.item,
@@ -88,19 +109,15 @@
         }
 
         try {
-          this.currentItem.deadline = moment(this.currentItem.deadline).format(
-            'YYYY-MM-DD',
-          )
+          this.currentItem.deadline = moment(this.currentItem.deadline).format('YYYY-MM-DD')
           await this.$store.dispatch('updateItem', this.currentItem)
           this.showEditModal = false
           this.$emit('itemchanged')
         } catch (error) {
           console.error('Error confirming item update:', error)
-          alert(
-            this.$t('failedToUpdateItem', {
-              message: error.response?.data?.message || error.message,
-            }),
-          )
+          alert(this.$t('failedToUpdateItem', {
+            message: error.response?.data?.message || error.message,
+          }))
         }
       },
       formatStatus(status) {

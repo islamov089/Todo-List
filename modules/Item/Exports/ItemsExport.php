@@ -10,16 +10,9 @@ use Maatwebsite\Excel\Concerns\WithBatchInserts;
 
 class ItemsExport implements FromQuery, WithHeadings, ShouldAutoSize, WithBatchInserts
 {
-    protected $limit;
-
-    public function __construct($limit = 5)
-    {
-        $this->limit = $limit;
-    }
-
     public function query()
     {
-        return Item::query()->limit($this->limit);
+        return Item::query(); 
     }
 
     public function headings(): array

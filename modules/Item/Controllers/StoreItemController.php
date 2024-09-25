@@ -1,24 +1,18 @@
 <?php
 
-
 namespace Modules\Item\Controllers;
-use Illuminate\Http\Request;
+
+use Modules\Item\Requests\StoreItemRequest;
 use App\Http\Controllers\Controller;
 use Modules\Item\Models\Item;
 
-
 class StoreItemController extends Controller
 {
-    public function __invoke(Request $request)
+    public function __invoke(StoreItemRequest $request)
     {
-        $data = $request->validate([
-            'name' => 'required|string|max:255',
-            'status' => 'required|string|in:draft,pending,in-progress,done',
-            'deadline' => 'required|date',
-        ]);
+        $data = $request->validated();
 
         $newItem = Item::create($data);
         return response()->json($newItem, 201);
     }
 }
-

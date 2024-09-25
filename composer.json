@@ -14,6 +14,7 @@
     "laravel/tinker": "^2.9"
   },
   "require-dev": {
+    "barryvdh/laravel-ide-helper": "^3.1",
     "fakerphp/faker": "^1.23",
     "laravel/pint": "^1.13",
     "laravel/sail": "^1.26",
@@ -28,7 +29,7 @@
       "Database\\Seeders\\": "database/seeders/",
       "Modules\\Item\\": "modules/Item/",
       "Modules\\Item\\Database\\Factories\\": "modules/Item/Database/factories",
-      "Modules\\Item\\Database\\Seeders\\": "modules/Item/Database/seeders",
+      "Modules\\Item\\Database\\Seeders\\": "modules/Item/Database/seeders"
     }
   },
   "autoload-dev": {

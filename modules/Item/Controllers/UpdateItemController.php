@@ -2,35 +2,30 @@
 
 namespace Modules\Item\Controllers;
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Carbon;
+use Modules\Item\Requests\UpdateItemRequest;
 use App\Http\Controllers\Controller;
 use Modules\Item\Models\Item;
+use Modules\Item\Actions\UpdateItemAction;
 
 class UpdateItemController extends Controller
 {
-    public function __invoke(Request $request, $id)
+    protected $updateItemAction;
+
+    public function __construct(UpdateItemAction $updateItemAction)
+    {
+        $this->updateItemAction = $updateItemAction;
+    }
+
+    public function __invoke(UpdateItemRequest $request, $id)
     {
         $existingItem = Item::findOrFail($id);
 
-        $existingItem->name = $request->input('name');
-        $existingItem->deadline = $request->input('deadline') ? Carbon::parse($request->input('deadline')) : null;
-        $existingItem->completed = $request->input('completed') ? true : false;
-        $existingItem->completed_at = $request->input('completed') ? Carbon::now() : null;
-
-        $newStatus = $request->input('status');
-        if ($newStatus) {
-            try {
-                $currentStatus = $existingItem->status;
-
-                $existingItem->status()->transitionTo($newStatus);
-            } catch (\Exception $e) {
-                return response()->json(['error' => $e->getMessage()], 400);
-            }
+        try {
+            $updatedItem = $this->updateItemAction->execute($existingItem, $request->validated());
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 400);
         }
 
-        $existingItem->save();
-
-        return response()->json($existingItem);
+        return response()->json($updatedItem);
     }
 }

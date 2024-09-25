@@ -18,6 +18,7 @@ const messages = {
     selectStatus: 'Select status',
     statusPending: 'Pending',
     statusInProgress: 'In Progress',
+    statusDraft:'Draft',
     statusDone: 'Done',
     deadline: 'Deadline',
     selectDeadline: 'Select deadline',
@@ -38,6 +39,9 @@ const messages = {
     nameAndDeadlineRequired: 'Name and deadline are required',
     failedToUpdateItem: 'Failed to update item: {message}',
     statusUnknown: 'Unknown status',
+    updateItem: "Error updating item!",
+    deleteItem: "Error deleting item!",
+    invalidTransition: "Invalid state transition!"
   },
 
   ru: {

@@ -37,14 +37,16 @@
           <el-form-item label="Name">
             <el-input v-model="editingItem.name" />
           </el-form-item>
-          <el-form-item label="Status">
-            <el-select v-model="editingItem.status">
-              <el-option value="pending" label="Pending" />
-              <el-option value="in-progress" label="In Progress" />
-              <el-option value="done" label="Done" />
+          <el-form-item :label="$t('status')">
+            <el-select v-model="editingItem.status" :placeholder="$t('selectStatus')">
+              <el-option :label="$t('statusDraft')" value="draft" />
+              <el-option :label="$t('statusPending')" value="pending" />
+              <el-option :label="$t('statusInProgress')" value="in-progress" />
+              <el-option :label="$t('statusDone')" value="done" />
             </el-select>
           </el-form-item>
-          <el-form-item label="Deadline">
+
+          <el-form-item :label="$t('deadline')">
             <el-date-picker
               v-model="editingItem.deadline"
               type="date"
@@ -67,6 +69,7 @@
   import { mapGetters, mapActions } from 'vuex'
   import moment from 'moment'
   import 'element-plus/dist/index.css'
+  import { ElMessage } from 'element-plus'
 
   export default {
     components: {
@@ -125,6 +128,8 @@
             return 'In Progress'
           case 'done':
             return 'Done'
+          case 'draft':
+            return 'Draft'
           default:
             return 'Unknown'
         }
@@ -140,37 +145,59 @@
             return 'status-in-progress'
           case 'Done':
             return 'status-done'
+          case 'Draft': 
+            return 'status-draft'
           default:
-            return ''
+            return '' 
         }
       },
       editItem(item) {
         this.editingItem = {
           id: item.id,
           name: item.name,
-          status: item.status,
+          status: item.status || 'draft', 
           deadline: this.formatDate(item.deadline),
         }
         this.showEditPopup = true
       },
       async updateItem() {
         try {
-          this.editingItem.deadline = moment(this.editingItem.deadline).format(
-            'YYYY-MM-DD',
-          )
+          this.editingItem.deadline = moment(this.editingItem.deadline).format('YYYY-MM-DD')
+          
+          if (!this.isValidStateTransition(this.editingItem)) {
+            ElMessage.error(this.$t('invalidTransition'))
+            return
+          }
+
           await this.$store.dispatch('updateItem', this.editingItem)
+          
           this.showEditPopup = false
           this.editingItem = {}
+          
           this.filterData()
         } catch (error) {
           console.error('Error updating item:', error)
+          ElMessage.error(this.$t('updateItem'))
         }
+      },
+      isValidStateTransition(item) {
+        const validTransitions = {
+          draft: ['pending'],
+          pending: ['in-progress'],
+          'in-progress': ['done'],
+        }
+
+        const currentState = item.current_status || 'draft'; 
+        const newState = item.status;
+
+        return validTransitions[currentState] && validTransitions[currentState].includes(newState)
       },
       async deleteItem(itemId) {
         try {
           await this.$store.dispatch('removeItem', itemId)
         } catch (error) {
           console.error('Error deleting item:', error)
+          ElMessage.error(this.$t('deleteItem'))
         }
       },
       handleSort({ field, direction }) {},
@@ -198,3 +225,4 @@
     },
   }
 </script>
+

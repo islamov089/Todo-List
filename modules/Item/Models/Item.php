@@ -2,20 +2,23 @@
 
 namespace Modules\Item\Models;
 
+use Asantibanez\LaravelEloquentStateMachines\Traits\HasStateMachines;
 use Illuminate\Database\Eloquent\Model;
+use Modules\Item\StateMachines\ItemStatusStateMachine;
 
 class Item extends Model
 {
+    use HasStateMachines;
+
     protected $fillable = [
-        'name', 
-        'status', 
-        'deadline', 
-        'completed', 
+        'name',
+        'status',
+        'deadline',
+        'completed',
         'completed_at'
     ];
 
-    protected $casts = [
-        'deadline' => 'date',
-        'completed_at' => 'datetime',
+    public $stateMachines = [
+        'status' => ItemStatusStateMachine::class
     ];
 }

@@ -14,13 +14,22 @@ class UpdateItemController extends Controller
         $existingItem = Item::findOrFail($id);
 
         $existingItem->name = $request->input('name');
-        $existingItem->status = $request->input('status');
         $existingItem->deadline = $request->input('deadline') ? Carbon::parse($request->input('deadline')) : null;
         $existingItem->completed = $request->input('completed') ? true : false;
         $existingItem->completed_at = $request->input('completed') ? Carbon::now() : null;
 
-        $existingItem->save();
+        $newStatus = $request->input('status');
+        if ($newStatus) {
+            try {
+                $currentStatus = $existingItem->status;
 
+                $existingItem->status()->transitionTo($newStatus);
+            } catch (\Exception $e) {
+                return response()->json(['error' => $e->getMessage()], 400);
+            }
+        }
+
+        $existingItem->save();
 
         return response()->json($existingItem);
     }

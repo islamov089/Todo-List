@@ -10,12 +10,14 @@
         </el-form-item>
 
         <el-form-item :label="$t('status')">
-          <el-select v-model="item.status" :placeholder="$t('selectStatus')">
-            <el-option :label="$t('statusPending')" value="pending" />
-            <el-option :label="$t('statusInProgress')" value="in-progress" />
-            <el-option :label="$t('statusDone')" value="done" />
-          </el-select>
-        </el-form-item>
+  <el-select v-model="item.status" :placeholder="$t('selectStatus')">
+    <el-option :label="$t('statusDraft')" value="draft" />
+    <el-option :label="$t('statusPending')" value="pending" />
+    <el-option :label="$t('statusInProgress')" value="in-progress" />
+    <el-option :label="$t('statusDone')" value="done" />
+  </el-select>
+</el-form-item>
+
 
         <el-form-item :label="$t('deadline')">
           <el-date-picker

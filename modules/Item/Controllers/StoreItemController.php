@@ -13,7 +13,7 @@ class StoreItemController extends Controller
     {
         $data = $request->validate([
             'name' => 'required|string|max:255',
-            'status' => 'required|string|in:pending,in-progress,done',
+            'status' => 'required|string|in:draft,pending,in-progress,done',
             'deadline' => 'required|date',
         ]);
 

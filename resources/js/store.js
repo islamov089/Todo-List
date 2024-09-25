@@ -49,11 +49,11 @@ const store = createStore({
       }
     },
 
-    async updateItem({ commit }, formData) {
+    async updateItem({ commit }, itemData) {
       try {
         const response = await axios.put(
-          `api/item/${formData.get('id')}`,
-          formData,
+          `api/item/${itemData.id}`,  
+          itemData  
         )
         if (response.status === 200) {
           commit('updateItem', response.data)
@@ -61,7 +61,9 @@ const store = createStore({
       } catch (error) {
         console.error('Error updating item:', error)
       }
-    },
+    }
+    ,
+    
 
     async removeItem({ commit }, itemId) {
       try {

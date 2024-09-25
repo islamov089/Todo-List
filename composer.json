@@ -9,6 +9,7 @@
   "license": "MIT",
   "require": {
     "php": "^8.2",
+    "asantibanez/laravel-eloquent-state-machines": "^6.0",
     "laravel/framework": "^11.9",
     "laravel/tinker": "^2.9"
   },
@@ -27,7 +28,7 @@
       "Database\\Seeders\\": "database/seeders/",
       "Modules\\Item\\": "modules/Item/",
       "Modules\\Item\\Database\\Factories\\": "modules/Item/Database/factories",
-      "Modules\\Item\\Database\\Seeders\\": "modules/Item/Database/seeders"
+      "Modules\\Item\\Database\\Seeders\\": "modules/Item/Database/seeders",
     }
   },
   "autoload-dev": {

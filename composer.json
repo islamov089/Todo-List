@@ -10,12 +10,15 @@
   "require": {
     "php": "^8.2",
     "asantibanez/laravel-eloquent-state-machines": "^6.0",
+    "kalnoy/nestedset": "^6.0",
     "laravel/framework": "^11.9",
+    "laravel/sanctum": "^4.0",
     "laravel/tinker": "^2.9"
   },
   "require-dev": {
     "barryvdh/laravel-ide-helper": "^3.1",
     "fakerphp/faker": "^1.23",
+    "laravel/breeze": "*",
     "laravel/pint": "^1.13",
     "laravel/sail": "^1.26",
     "mockery/mockery": "^1.6",
@@ -27,9 +30,11 @@
       "App\\": "app/",
       "Database\\Factories\\": "database/factories/",
       "Database\\Seeders\\": "database/seeders/",
-      "Modules\\Item\\": "modules/Item/",
-      "Modules\\Item\\Database\\Factories\\": "modules/Item/Database/factories",
-      "Modules\\Item\\Database\\Seeders\\": "modules/Item/Database/seeders"
+        "Modules\\": "modules/",
+       "Modules\\Item\\": "modules/Item/app",
+        "Modules\\Item\\Database\\Factories\\": "modules/Item/Database/factories",
+        "Modules\\Item\\Database\\Seeders\\": "modules/Item/Database/seeders",
+        "Modules\\Item\\Routes\\": "modules/Item/Routes"
     }
   },
   "autoload-dev": {

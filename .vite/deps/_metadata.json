@@ -1,0 +1,82 @@
+{
+  "hash": "bc30e084",
+  "configHash": "c44a9b0c",
+  "lockfileHash": "4466babe",
+  "browserHash": "94ae8555",
+  "optimized": {
+    "vue": {
+      "src": "../../node_modules/vue/dist/vue.runtime.esm-bundler.js",
+      "file": "vue.js",
+      "fileHash": "b695792b",
+      "needsInterop": false
+    },
+    "@fortawesome/fontawesome-svg-core": {
+      "src": "../../node_modules/@fortawesome/fontawesome-svg-core/index.mjs",
+      "file": "@fortawesome_fontawesome-svg-core.js",
+      "fileHash": "f38da1e5",
+      "needsInterop": false
+    },
+    "@fortawesome/vue-fontawesome": {
+      "src": "../../node_modules/@fortawesome/vue-fontawesome/index.es.js",
+      "file": "@fortawesome_vue-fontawesome.js",
+      "fileHash": "5603c6c4",
+      "needsInterop": false
+    },
+    "@fortawesome/free-solid-svg-icons": {
+      "src": "../../node_modules/@fortawesome/free-solid-svg-icons/index.mjs",
+      "file": "@fortawesome_free-solid-svg-icons.js",
+      "fileHash": "dcd58cb9",
+      "needsInterop": false
+    },
+    "@bhplugin/vue3-datatable": {
+      "src": "../../node_modules/@bhplugin/vue3-datatable/dist/vue3-datatable.js",
+      "file": "@bhplugin_vue3-datatable.js",
+      "fileHash": "9e52490d",
+      "needsInterop": false
+    },
+    "element-plus": {
+      "src": "../../node_modules/element-plus/es/index.mjs",
+      "file": "element-plus.js",
+      "fileHash": "162c1a79",
+      "needsInterop": false
+    },
+    "vuex": {
+      "src": "../../node_modules/vuex/dist/vuex.esm-bundler.js",
+      "file": "vuex.js",
+      "fileHash": "0b90ea0c",
+      "needsInterop": false
+    },
+    "axios": {
+      "src": "../../node_modules/axios/index.js",
+      "file": "axios.js",
+      "fileHash": "2111e2b3",
+      "needsInterop": false
+    },
+    "file-saver": {
+      "src": "../../node_modules/file-saver/dist/FileSaver.min.js",
+      "file": "file-saver.js",
+      "fileHash": "9621f6ea",
+      "needsInterop": true
+    },
+    "vue-i18n": {
+      "src": "../../node_modules/vue-i18n/dist/vue-i18n.mjs",
+      "file": "vue-i18n.js",
+      "fileHash": "0a770ee4",
+      "needsInterop": false
+    }
+  },
+  "chunks": {
+    "chunk-LJANCH76": {
+      "file": "chunk-LJANCH76.js"
+    },
+    "chunk-AYVSL3LM": {
+      "file": "chunk-AYVSL3LM.js"
+    },
+    "chunk-RP2GRUF3": {
+      "file": "chunk-RP2GRUF3.js"
+    },
+    "chunk-G3PMV62Z": {
+      "file": "chunk-G3PMV62Z.js"
+    }
+  }
+}

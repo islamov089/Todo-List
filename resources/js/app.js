@@ -10,6 +10,8 @@ import {
   faEdit,
 } from '@fortawesome/free-solid-svg-icons'
 import store from './store'
+import router from './routes/index'; // Убедись, что путь правильный
+
 import DataTable from '@bhplugin/vue3-datatable'
 import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
@@ -20,6 +22,7 @@ const app = createApp(App)
 
 app.component('font-awesome-icon', FontAwesomeIcon)
 app.component('DataTable', DataTable)
+app.use(router); // Используем роутер
 
 app.use(store)
 app.use(i18n)

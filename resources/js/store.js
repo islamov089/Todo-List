@@ -2,12 +2,11 @@ import { createStore } from 'vuex'
 import axios from 'axios'
 import { saveAs } from 'file-saver'
 
+
 const store = createStore({
   state() {
     return {
       items: [],
-      isAuthenticated: false, 
-      user: null, 
     }
   },
 
@@ -26,14 +25,6 @@ const store = createStore({
     },
     removeItem(state, itemId) {
       state.items = state.items.filter((item) => item.id !== itemId)
-    },
-    setUser(state, user) {
-      state.user = user
-      state.isAuthenticated = true 
-    },
-    logout(state) {
-      state.user = null
-      state.isAuthenticated = false 
     },
   },
 
@@ -60,14 +51,19 @@ const store = createStore({
 
     async updateItem({ commit }, itemData) {
       try {
-        const response = await axios.put(`api/item/${itemData.id}`, itemData)
+        const response = await axios.put(
+          `api/item/${itemData.id}`,  
+          itemData  
+        )
         if (response.status === 200) {
           commit('updateItem', response.data)
         }
       } catch (error) {
         console.error('Error updating item:', error)
       }
-    },
+    }
+    ,
+    
 
     async removeItem({ commit }, itemId) {
       try {
@@ -77,26 +73,6 @@ const store = createStore({
         }
       } catch (error) {
         console.error('Error removing item:', error)
-      }
-    },
-
-    async login({ commit }, credentials) {
-      try {
-        const response = await axios.post('/api/login', credentials)
-        if (response.status === 200) {
-          commit('setUser', response.data.user) 
-        }
-      } catch (error) {
-        console.error('Error logging in:', error)
-      }
-    },
-
-    async logout({ commit }) {
-      try {
-        await axios.post('/api/logout')
-        commit('logout') 
-      } catch (error) {
-        console.error('Error logging out:', error)
       }
     },
 
@@ -125,12 +101,6 @@ const store = createStore({
   getters: {
     allItems(state) {
       return state.items
-    },
-    isAuthenticated(state) {
-      return state.isAuthenticated
-    },
-    currentUser(state) {
-      return state.user
     },
   },
 })

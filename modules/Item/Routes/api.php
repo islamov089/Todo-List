@@ -19,12 +19,12 @@ Route::middleware('api')->prefix('api')->group(function(){
         Route::delete('/{id}', DestroyItemController::class)->name('item.destroy');
     });
 
-    Route::prefix('categories')->group(function () {
-        Route::get('/', [CategoryController::class, 'index']);
-        Route::post('/', [CategoryController::class, 'store']);
-        Route::put('/{id}', [CategoryController::class, 'update']);
-        Route::delete('/{id}', [CategoryController::class, 'destroy']);
-    });
+    // Route::prefix('categories')->group(function () {
+    //     Route::get('/', [CategoryController::class, 'index']);
+    //     Route::post('/', [CategoryController::class, 'store']);
+    //     Route::put('/{id}', [CategoryController::class, 'update']);
+    //     Route::delete('/{id}', [CategoryController::class, 'destroy']);
+    // });
 
     Route::get('/items', IndexItemController::class)->name('item.index');
     Route::post('/upload', UploadController::class)->name('item.upload');
